@@ -1,5 +1,6 @@
 import { executeBackendTool } from '@/app/actions/execute-tool';
 import { toolRegistry } from '@/config/tools';
+import { executeAiTool } from '@/lib/mute/ai-router';
 import { ToolExecutionResponse } from '@/types/mute';
 import QRCode from 'qrcode';
 
@@ -59,10 +60,14 @@ export async function processToolRequest(
   }
 
   if (config.engine === 'ai') {
-    return {
-      success: false,
-      error: 'AI Provider integration route is initializing in next step.',
-    };
+    const prompt = textInput || (formData.get('text') as string) || '';
+    const selectedModel = (formData.get('model') as string) || 'google/gemini-2.0-flash-001';
+
+    if (!prompt.trim()) {
+      return { success: false, error: 'Prompt message cannot be empty.' };
+    }
+
+    return await executeAiTool(prompt, selectedModel);
   }
 
   return { success: false, error: 'Unsupported execution engine route.' };
