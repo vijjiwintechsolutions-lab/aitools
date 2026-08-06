@@ -1,16 +1,16 @@
 'use client';
 
 import UniversalUpload from '@/components/mute/UniversalUpload';
+import { processToolRequest } from '@/lib/mute/processing-router';
 import { ToolConfig, ToolExecutionResponse } from '@/types/mute';
 import { AlertCircle, CheckCircle2, Download, Loader2, RefreshCw } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface ToolFormProps {
   tool: ToolConfig;
-  executeAction: (formData: FormData) => Promise<ToolExecutionResponse>;
 }
 
-export default function ToolForm({ tool, executeAction }: ToolFormProps) {
+export default function ToolForm({ tool }: ToolFormProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [textInput, setTextInput] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -34,7 +34,7 @@ export default function ToolForm({ tool, executeAction }: ToolFormProps) {
         }
       }
 
-      const response = await executeAction(formData);
+      const response = await processToolRequest(tool.id, formData);
       setResult(response);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Execution failed';
