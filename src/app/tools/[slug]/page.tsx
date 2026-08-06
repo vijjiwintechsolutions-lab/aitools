@@ -1,6 +1,5 @@
 import ToolForm from '@/components/mute/ToolForm';
 import { getToolBySlug, toolRegistry } from '@/config/tools';
-import { processToolRequest } from '@/lib/mute/processing-router';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -35,11 +34,6 @@ export default async function DynamicToolPage({ params }: ToolPageProps) {
     notFound();
   }
 
-  async function handleExecutionAction(formData: FormData) {
-    'use server';
-    return await processToolRequest(tool!.id, formData);
-  }
-
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <header className="mb-8">
@@ -51,7 +45,7 @@ export default async function DynamicToolPage({ params }: ToolPageProps) {
       </header>
 
       <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-xl">
-        <ToolForm tool={tool} executeAction={handleExecutionAction} />
+        <ToolForm tool={tool} />
       </div>
     </div>
   );
