@@ -1,3 +1,4 @@
+import Navbar from '@/components/layout/Navbar';
 import type { Metadata } from 'next';
 import './globals.css';
 
@@ -13,8 +14,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased bg-[#090d16] text-slate-100 min-h-screen">
-        {children}
+      <body className="antialiased bg-[#090d16] text-slate-100 min-h-screen flex flex-col">
+        <Navbar />
+        <div className="flex-1">{children}</div>
+        <footer className="border-t border-slate-800/80 py-8 text-center text-xs text-slate-500">
+          <p>© {new Date().getFullYear()} Market1 OS (Project Atlas). Enterprise Tool Engine.</p>
+        </footer>
       </body>
     </html>
   );
