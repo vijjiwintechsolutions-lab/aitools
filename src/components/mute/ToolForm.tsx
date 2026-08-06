@@ -39,7 +39,7 @@ export default function ToolForm({ tool, executeAction }: ToolFormProps) {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Execution failed';
       setResult({ success: false, error: msg });
-    } font-medium {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -127,7 +127,6 @@ export default function ToolForm({ tool, executeAction }: ToolFormProps) {
         </button>
       </form>
 
-      {/* Result Preview & Download Engine */}
       {result && (
         <div className="mt-8 border-t border-slate-800 pt-6">
           {result.success ? (
@@ -137,14 +136,12 @@ export default function ToolForm({ tool, executeAction }: ToolFormProps) {
                 <span>Processing completed in {result.executionTimeMs || 0}ms</span>
               </div>
 
-              {/* Browser Analytics / JSON Result */}
               {result.data && (
                 <div className="bg-slate-950 p-4 rounded-lg border border-slate-800 font-mono text-xs text-slate-300 overflow-x-auto">
                   <pre>{JSON.stringify(result.data, null, 2)}</pre>
                 </div>
               )}
 
-              {/* File Download Result */}
               {result.downloadUrl && (
                 <div className="space-y-4">
                   {result.mimeType?.startsWith('image/') && (
